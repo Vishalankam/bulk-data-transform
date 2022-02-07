@@ -21,5 +21,7 @@ class main():
     connector = read_connector()
     connector.authentication()
     connector.read_data()
+    connector.upload_data()
     
+            
             

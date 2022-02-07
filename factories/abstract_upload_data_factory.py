@@ -4,5 +4,5 @@ from abc import ABC, abstractmethod
 class AbstractUploadDataFactory(ABC):
 
     @abstractmethod
-    def upload_data(self):
+    def upload_batch(self):
         pass

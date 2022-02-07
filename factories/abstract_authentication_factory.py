@@ -4,13 +4,9 @@ from abc import ABC, abstractmethod
 class AbstractAuthenticationFactory(ABC):
 
     @abstractmethod
-    def get_method_of_authentication(self):
+    def take_credentials_input(self):
         pass
 
     @abstractmethod
-    def get_auth_token(self):
-        pass
-
-    @abstractmethod
-    def validate(self):
+    def authenticate_user(self):
         pass
