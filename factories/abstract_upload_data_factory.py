@@ -6,3 +6,7 @@ class AbstractUploadDataFactory(ABC):
     @abstractmethod
     def upload_batch(self):
         pass
+
+    @abstractmethod
+    def check_job_status(self):
+        pass

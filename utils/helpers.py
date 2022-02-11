@@ -1,5 +1,5 @@
 import xml.dom.minidom
-
+import base64
 
 def getUniqueElementValueFromXmlString(xmlString, elementName):
        """
@@ -20,3 +20,21 @@ def getUniqueElementValueFromXmlString(xmlString, elementName):
                .replace('</' + elementName + '>', '')
            )
        return elementValue
+
+def get_base64_encoded_string(string_value):
+        creds_bytes = string_value.encode("utf-8") 
+        encoded_creds = base64.b64encode(creds_bytes)
+        return encoded_creds
+
+def get_dic_from_arrays(key_arr, value_arr):
+    json_obj = {}
+    for index in range(len(value_arr)):  
+        json_obj[key_arr[index]] = value_arr[index]
+    return json_obj
+
+
+def log_exception(connector, classname, function_name, exception_detail):
+    print("Exception occurred - in {0}/{1} class, inside function {2}, details are \n{3}\n".format(connector, classname, function_name, exception_detail))
+
+def log_details(connector, classname, function_name, output):
+    print("Details - In {0}/{1} class, inside function {2}, details are - \n{3}\n".format(connector, classname, function_name, output))

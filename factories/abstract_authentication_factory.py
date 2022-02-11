@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 class AbstractAuthenticationFactory(ABC):
 
     @abstractmethod
-    def take_credentials_input(self):
+    def get_credentials_input(self):
         pass
 
     @abstractmethod

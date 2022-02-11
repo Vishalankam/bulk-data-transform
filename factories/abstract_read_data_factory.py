@@ -10,3 +10,7 @@ class AbstractReadDataFactory(ABC):
     @abstractmethod
     def format_data(self):
         pass
+    
+    @abstractmethod
+    def get_destination_address(self):
+        pass

@@ -8,9 +8,5 @@ class AbstractConnectorFactory(ABC):
         pass
 
     @abstractmethod
-    def read_data(self):
-        pass
-
-    @abstractmethod
-    def upload_data(self):
+    def read_and_upload_data(self):
         pass
