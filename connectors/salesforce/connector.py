@@ -20,12 +20,13 @@ class Connector(AbstractConnectorFactory):
                auth.get_credentials_input()
                self.auth_token, self.host_uri = auth.authenticate_user()
                self.user_authenticated = True
-               log_details("User logged in successfully..!")
+               log_details(CONNECTOR_NAME, "Connector", "authentication", "User logged in successfully..!")
             except Exception as e:
+                self.user_authenticated = False
                 log_exception(CONNECTOR_NAME, "Connector", "authentication", e)
-                log_details("Login failed: You need to login again.")
+                log_details(CONNECTOR_NAME, "Connector", "authentication","Login failed: You need to login again.")
 
-        log_details(self.auth_token, self.host_uri)
+        print(self.auth_token, self.host_uri)
 
     def read_and_upload_data(self):
         read_data = ReadData(self.auth_token, self.host_uri)

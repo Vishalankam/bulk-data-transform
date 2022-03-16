@@ -43,6 +43,8 @@ class ReadData(AbstractReadDataFactory):
         reader = list(csv.reader(file))
         total_records  = len(reader)
         batch_start = 0
+        total_records_uploaded = 0
+        total_no_of_records_failed = 0
 
         while batch_start <= total_records:
             data_batch = ""
@@ -60,17 +62,20 @@ class ReadData(AbstractReadDataFactory):
                 data_batch = """{0} {1} \n""".format(data_batch, ",".join(reader[row_count + batch_start]))
                 row_count += 1
 
-            state = self.upload_data(data_batch)
+            state, no_of_records_failed = self.upload_data(data_batch)
+            total_records_uploaded = (total_records_uploaded + limit ) - no_of_records_failed
+            total_no_of_records_failed  = total_no_of_records_failed + no_of_records_failed
 
             if state == "JobComplete":
-                log_details(CONNECTOR_NAME, "ReadData", "format_data","{0} records uploaded successfully! ".format(batch_start+limit ))
+                log_details(CONNECTOR_NAME, "ReadData", "format_data","{0} records uploaded successfully! ".format(total_records_uploaded))
+                log_details(CONNECTOR_NAME, "ReadData", "format_data","{0} records failed to upload. ".format(total_no_of_records_failed))
             elif state =="Failed":
                 log_details(CONNECTOR_NAME, "ReadData", "format_data", "{0} records (from {1} to {2}) failed to upload! ".format(limit, batch_start, batch_start + limit))
             elif state == "Aborted":
                 log_details(CONNECTOR_NAME, "ReadData", "format_data","{0} records (from {1} to {2}) Aborted!".format(limit, batch_start, batch_start + limit))
 
             batch_start = batch_start + BATCH_LIMIT
-
+            
         return data_batch
 
 
@@ -96,7 +101,7 @@ class ReadData(AbstractReadDataFactory):
         stop_checking_status = False
         while not stop_checking_status:
             try:
-                state = upload.check_job_status()
+                state, no_of_records_failed = upload.check_job_status()
                 if state == "JobComplete" or state == "Failed" or state == "Aborted":
                     stop_checking_status = True
                 else:
@@ -104,4 +109,4 @@ class ReadData(AbstractReadDataFactory):
             except Exception as e:
                 log_exception(CONNECTOR_NAME, "ReadData", "upload_data", e)
 
-        return state
+        return state, no_of_records_failed
