@@ -83,7 +83,7 @@ class UploadData(AbstractUploadDataFactory):
 
         response = json.loads(resp.content)
         state = response['state']
-        log_details(CONNECTOR_NAME, "UploadData", "start_upload", "Uploaded the data..!")
+        log_details(CONNECTOR_NAME, "UploadData", "start_upload", "Uploaded the batch data..!")
         return state
 
 
@@ -100,6 +100,6 @@ class UploadData(AbstractUploadDataFactory):
              raise Exception(msg, resp.status_code)
 
         response = json.loads(resp.content)
-        print("🚀 ~ file: upload_data.py ~ line 57 ~ resp.status_code", response)
+        print("file: upload_data.py ~ line 57 ~ resp.status_code", response)
         state = response['state']
-        return state
+        return state, response['numberRecordsFailed']
